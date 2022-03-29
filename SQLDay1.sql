@@ -90,12 +90,13 @@ insert into tblEmployeePersonalinfo (employeename,age,phno,gender,employeeaddres
 ('SaiCharan',22,'9012345671','male','madurai','BE'),('Abi',23,'9012345678','female','madurai','BE'),
 ('Raj',23,'7812345678','male','chennai','MSC'),('Kamal',25,'6785345678','male','Trichy','Mtech')
 
---violation of check constaint
+--violation of check constraint
 insert into tblEmployeePersonalinfo (employeename,age,phno,gender,employeeaddress,degree) values
 ('Sai',20,'9012348991','male','madurai','BE')
 
 select * from tbldepartment
 select * from tblEmployeePersonalinfo
+select * from tblEmployee
 --create tblEmployee
 
 create table tblEmployee(employeeid int primary key identity(1000,1),designation nvarchar(20),
@@ -106,3 +107,54 @@ insert into tblEmployee(designation,salary,did,phoneno) values
 ('HRManager',78000,1,'6785345678'),('Senoirdeveloper',88000,4,'7812345678'),
 ('Senoirdeveloper',88000,4,'9012345671'),('Senoirdeveloper',88000,4,'9012345678')
 
+--Delete
+--HardDelete
+delete from tbldepartment where departmentid=5
+--Softdelete
+alter table tbldepartment add isrunning bit
+
+--update 
+update tbldepartment set isrunning=1
+
+--softdelete
+update tbldepartment set isrunning=0 where departmentid=3
+
+--DQL --Data Query Language
+--select
+
+--to see the entire table
+select * from tbldepartment
+
+--to see particular column
+select employeename,employeeaddress  from tblEmployeePersonalinfo
+
+--Where clause
+select * from tblEmployeePersonalinfo where employeeaddress='madurai'
+--Relational Operator >,<,>=,<=,=,!=,or,and between
+
+--display the emp details whose age is>23
+select * from tblEmployeePersonalinfo where age>23
+----display the emp details whose age is>23 and degree=BSC
+select * from tblEmployeePersonalinfo where age>23 and degree='BSC'
+
+--display the department name where yoe should be btw 1-1-2010-31-12-2011
+select departmentname from tbldepartment where yearofestablishment between '2010-1-1' and '2011-12-31'
+
+--Like operator patten matching .-,%,^,[]
+--display all the employee name starts with b
+select  employeename from tblEmployeePersonalinfo where  employeename like 'b%'
+
+--display all the employee name ends with i
+select  employeename from tblEmployeePersonalinfo where  employeename like '%i'
+
+--display all the employee name contain a inbetween
+select  employeename from tblEmployeePersonalinfo where  employeename like '%a%'
+
+--display all the employee name contain second charater a 
+select  employeename from tblEmployeePersonalinfo where  employeename like '_a%'
+
+--display all the employee name contain second charater a 
+select  employeename from tblEmployeePersonalinfo where  employeename like '_a%'
+
+--display all the employee name where name starts with a to g 
+select  employeename from tblEmployeePersonalinfo where  employeename like '[a-g]%'

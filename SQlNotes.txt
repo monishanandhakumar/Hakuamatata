@@ -1,0 +1,21 @@
+DDL
+
+Constraints
+
+Primary key--unique,shouldnot have null value
+foreignkey
+check 
+notnull
+unique --only one null value
+default
+integityconstraint
+
+(+91)8790977677
+(90)(677)(56678)
+
+--Read Sqlserver datatype
+--understand Truncate 
+--learn DDL commands
+
+Create product tabel(productid primarykey,productname unique ,quantity not null,price,image) 
+supplier(suplierid,suppliername,Address,contactno)

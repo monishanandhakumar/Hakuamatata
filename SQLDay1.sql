@@ -79,3 +79,30 @@ insert into tblEmployee(employeeid,employeename) values('INT2001','Abi')
 select * from tblEmployee
 --error Violation of UNIQUE KEY constraint 
 insert into tblEmployee(employeeid,employeename) values('INT2002','Vinay')
+
+--Drop tblEmployee
+drop table tblEmployee
+
+create table tblEmployeePersonalinfo(employeename varchar(30) not null unique,age int check(age >21),phno varchar(20) primary key,
+gender nvarchar(10),employeeaddress nvarchar(20),degree varchar(20))
+
+insert into tblEmployeePersonalinfo (employeename,age,phno,gender,employeeaddress,degree) values
+('SaiCharan',22,'9012345671','male','madurai','BE'),('Abi',23,'9012345678','female','madurai','BE'),
+('Raj',23,'7812345678','male','chennai','MSC'),('Kamal',25,'6785345678','male','Trichy','Mtech')
+
+--violation of check constaint
+insert into tblEmployeePersonalinfo (employeename,age,phno,gender,employeeaddress,degree) values
+('Sai',20,'9012348991','male','madurai','BE')
+
+select * from tbldepartment
+select * from tblEmployeePersonalinfo
+--create tblEmployee
+
+create table tblEmployee(employeeid int primary key identity(1000,1),designation nvarchar(20),
+salary int ,did int references tbldepartment(departmentid),
+phoneno varchar(20) references tblEmployeePersonalinfo(phno))
+
+insert into tblEmployee(designation,salary,did,phoneno) values
+('HRManager',78000,1,'6785345678'),('Senoirdeveloper',88000,4,'7812345678'),
+('Senoirdeveloper',88000,4,'9012345671'),('Senoirdeveloper',88000,4,'9012345678')
+

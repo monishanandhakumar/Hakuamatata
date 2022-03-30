@@ -207,4 +207,32 @@ where a.did=b.departmentid
 
  --Arithimetic  +,-,*,/,%
 
- --Unique()
+ --Unique
+
+ select distinct(employeeaddress) from tblEmployeePersonalinfo
+
+ --Is It Possible to use aggegrate function in where clause?
+ --Total no of employee salary except maximum salary
+ select sum(salary) from tblEmployee where salary != max(salary)
+
+ --Having Clause
+--display deptname,no of employees from each department having more than 2 employee
+
+select b.departmentname,COUNT(a.employeeid) 'No of Employees' from tblEmployee a ,tbldepartment b
+where a.did=b.departmentid
+ group by b.departmentname
+ having COUNT(a.employeeid)>2
+ order by b.departmentname desc
+
+ --display the no of male and female from chennai or madurai or trichy)
+
+ select gender,count(gender) from tblEmployeePersonalinfo
+ where employeeaddress in ('Chennai','madurai','trichy')
+  group by gender
+
+  --display the max salary of each department
+  select did,max(salary) 'Maximun salary' from tblEmployee
+   group by did
+   having MAX(salary)>80000
+
+   --display the no of employees under each degree where their name not between l-u having the count>2

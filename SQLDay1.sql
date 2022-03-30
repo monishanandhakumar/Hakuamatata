@@ -83,6 +83,7 @@ insert into tblEmployee(employeeid,employeename) values('INT2002','Vinay')
 --Drop tblEmployee
 drop table tblEmployee
 
+sp_help tblEmployeePersonalinfo
 create table tblEmployeePersonalinfo(employeename varchar(30) not null unique,age int check(age >21),phno varchar(20) primary key,
 gender nvarchar(10),employeeaddress nvarchar(20),degree varchar(20))
 
@@ -157,4 +158,53 @@ select  employeename from tblEmployeePersonalinfo where  employeename like '_a%'
 select  employeename from tblEmployeePersonalinfo where  employeename like '_a%'
 
 --display all the employee name where name starts with a to g 
-select  employeename from tblEmployeePersonalinfo where  employeename like '[a-g]%'
+select  employeename as [Employee Name] from tblEmployeePersonalinfo where  employeename like '[a-g]%'
+
+--fetching the data from 2 tables
+--Display employee name and salary
+
+select a.employeename,b.salary  from  tblEmployeePersonalinfo a ,tblEmployee b
+where a.phno=b.phoneno
+
+--Aggregate function--group ,Min,Max,Avg,Sum,Count
+
+--count--will not include null value
+--display no of employee in hakunamata
+select count(phno)  [TotalEmployee] from tblEmployeePersonalinfo 
+
+--select min salary of the employee
+
+select min(salary) 'Minium Salary' from tblEmployee
+
+select max(salary) 'Maxium Salary' from tblEmployee
+
+select sum(salary) 'Total Salary' from tblEmployee
+
+--Order by ascending order ,descending order
+--select columnlist from tbal
+
+select * from tblEmployeePersonalinfo order by employeename
+
+select * from tblEmployeePersonalinfo order by employeename desc
+
+--arranging based on column list
+
+select employeename,gender,employeeaddress from tblEmployeePersonalinfo 
+order by 3 desc
+
+select * from tblEmployeePersonalinfo 
+order by employeeaddress,employeename desc
+
+--group by works with aggregate function
+--display no of employees from each department
+select did,COUNT(*) 'No of Employees' from tblEmployee group by did
+
+--display deptname,no of employees from each department
+
+select b.departmentname,COUNT(a.employeeid) 'No of Employees' from tblEmployee a ,tbldepartment b
+where a.did=b.departmentid
+ group by b.departmentname
+
+ --Arithimetic  +,-,*,/,%
+
+ --Unique()

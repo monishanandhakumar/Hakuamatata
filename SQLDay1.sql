@@ -236,3 +236,131 @@ where a.did=b.departmentid
    having MAX(salary)>80000
 
    --display the no of employees under each degree where their name not between l-u having the count>2
+   select * from tblEmployeePersonalinfo
+   select * from tblEmployee
+   select * from tbldepartment
+
+   --SubQueries
+   --1.Single row sub query  2.Multiple row sub query
+
+   --1.Single row sub query  >,<,>=,<=,!=,Not 
+
+   --select employee details whose salary is greater than min salary of the employee 
+
+   select * from tblEmployee where salary >
+
+   (select min(salary) from tblEmployee)
+
+   --display the did,minsal is morethan the minium salary of the did=2
+
+   select did,min(salary) 'Minium Salary' from tblEmployee group by did
+   having min(salary)>
+   (select min(salary) from tblEmployee where did=2)
+
+   --delete the employee details whose department is HR
+   delete from tblEmployee where did=
+   (select departmentid from tbldepartment where departmentname='HR')
+
+   --Multiple row subquery ALL,IN,ANY
+
+   --find the salary of the employee whose salary is morethan the
+   -- minium salary of the employees in any dept
+
+   select * from tblEmployee where salary > any
+   (select min(salary) from tblEmployee group by did)
+
+
+     select * from tblEmployee where salary > all
+   (select min(salary) from tblEmployee group by did)
+
+--Stored Procedure
+--set of sql statement
+--DML,DDL,TCL,DQL 
+
+select * from tblEmployee
+
+/*create procedure prodedurename(parameterlist)
+as
+begin
+set of sql statement
+End
+*/
+
+create procedure spu_Employeedetails
+as
+begin
+select * from tblEmployee
+end
+
+execute spu_Employeedetails
+
+
+--Query plan
+
+  //https://blog.sqlauthority.com/2009/08/21/sql-server-get-query-plan-along-with-query-text-and-execution-count/
+USE master;  
+GO  
+SELECT * FROM sys.dm_exec_query_stats qs CROSS APPLY sys.dm_exec_query_plan(qs.plan_handle);  
+GO  
+
+
+SELECT cp.objtype AS ObjectType,
+OBJECT_NAME(st.objectid,st.dbid) AS ObjectName,
+cp.usecounts AS ExecutionCount,
+st.TEXT AS QueryText,
+qp.query_plan AS QueryPlan
+FROM sys.dm_exec_cached_plans AS cp
+CROSS APPLY sys.dm_exec_query_plan(cp.plan_handle) AS qp
+CROSS APPLY sys.dm_exec_sql_text(cp.plan_handle) AS st
+--WHERE OBJECT_NAME(st.objectid,st.dbid) = 'YourObjectName'
+--where st.text like 'select%' or st.text like 'create%'
+
+
+alter procedure spu_taxcalculation(@eid int )
+as
+begin
+declare @anlsal int
+declare @tax int
+ if(@eid  is null)
+  begin
+   print('Eid is null')
+  end
+  else
+     begin
+         set @anlsal  = (select (salary*12) from tblEmployee where employeeid=@eid)
+          if(@anlsal>300000) 
+	         begin 
+		       set @tax=@anlsal*0.1
+		     end
+			 print @tax
+      end
+end
+
+spu_taxcalculation @eid=1001
+
+create procedure spu_join(@ecount int)
+as
+begin
+select b.departmentname,COUNT(a.employeeid) 'No of Employees' from tblEmployee a ,tbldepartment b
+where a.did=b.departmentid
+ group by b.departmentname
+ having COUNT(a.employeeid)>@ecount
+ order by b.departmentname desc
+ end
+
+ spu_join @ecount=2
+
+ select * from tbldepartment
+
+ Create procedure spu_Insertdept(@did int,@dname varchar(30),@yoe date,@ir bit)
+ as
+ begin
+    insert into tbldepartment(departmentid,departmentname,yearofestablishment,isrunning) values
+	(@did,@dname,@yoe,@ir)
+ end
+
+  spu_Insertdept @did =5 ,@dname ='AAA',@yoe ='2022-1-10',@ir=1
+
+
+  --create a procedure to fetch the depatment details having less than 2 employee
+  --create a procedure to display the product with their category name and suppliername
